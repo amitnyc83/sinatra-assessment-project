@@ -1,8 +1,12 @@
 class OwnersController < ApplicationController
 
   # GET: /owners
-  get "/owners" do
-    erb :"/owners/index.html"
+  get "/signup" do
+    if !logged_in?
+      erb :"owners/signup.html"
+    else
+      redirect "/teams/index.html"
+    end
   end
 
   # GET: /owners/new
