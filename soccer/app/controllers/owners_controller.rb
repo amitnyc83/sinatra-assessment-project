@@ -9,14 +9,26 @@ class OwnersController < ApplicationController
     end
   end
 
+
   # GET: /owners/new
   get "/owners/new" do
+
     erb :"/owners/new.html"
   end
 
   # POST: /owners
-  post "/owners" do
-    redirect "/owners"
+  post "/signup" do
+    if params[:username] == "" || params[:email] == "" || params[:password] ==  ""
+
+     redirect "/owners/signup.html"
+    else
+     @user = Owner.create(:name => params[:name], :username => params[:username], :password => params[:password])
+     @user.save
+
+     session[:user_id] = @user.id
+
+     redirect "/teams"
+    end
   end
 
   # GET: /owners/5
