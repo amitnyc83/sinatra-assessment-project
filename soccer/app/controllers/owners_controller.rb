@@ -39,8 +39,21 @@ class OwnersController < ApplicationController
       session[:owner_id] = @user.id
       redirect "/teams"
     else
-      redirect "/signup"
+      redirect "owners/signup"
     end
+  end
+
+  get "/logout" do
+    session.clear
+
+    redirect "/login"
+  end
+
+
+  get "/owners/:slug" do
+    @user = User.find_by_slug(params[:slug])
+
+    erb :"/owners/show"
   end
 
 end
