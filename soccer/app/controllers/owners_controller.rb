@@ -3,24 +3,17 @@ class OwnersController < ApplicationController
   # GET: /owners
   get "/signup" do
     if !logged_in?
+
       erb :"owners/signup.html"
     else
-      redirect "/teams/index.html"
+      redirect "/teams"
     end
   end
 
-
-  # GET: /owners/new
-  get "/owners/new" do
-
-    erb :"/owners/new.html"
-  end
-
-  # POST: /owners
   post "/signup" do
-    if params[:username] == "" || params[:email] == "" || params[:password] ==  ""
+    if params[:name] == "" || params[:username] == "" || params[:password] ==  ""
 
-     redirect "/owners/signup.html"
+     redirect "/signup"
     else
      @user = Owner.create(:name => params[:name], :username => params[:username], :password => params[:password])
      @user.save
@@ -31,23 +24,23 @@ class OwnersController < ApplicationController
     end
   end
 
-  # GET: /owners/5
-  get "/owners/:id" do
-    erb :"/owners/show.html"
+  get "/login" do
+    if !logged_in?
+      erb :"/owners/login.html"
+    else
+      redirect "/teams"
+    end
   end
 
-  # GET: /owners/5/edit
-  get "/owners/:id/edit" do
-    erb :"/owners/edit.html"
+
+  post "/login" do
+    @user = Owner.find_by(:username => params[:username])
+    if @user && @user.authenticate(params[:password])
+      session[:owner_id] = @user.id
+      redirect "/teams"
+    else
+      redirect "/signup"
+    end
   end
 
-  # PATCH: /owners/5
-  patch "/owners/:id" do
-    redirect "/owners/:id"
-  end
-
-  # DELETE: /owners/5/delete
-  delete "/owners/:id/delete" do
-    redirect "/owners"
-  end
 end
