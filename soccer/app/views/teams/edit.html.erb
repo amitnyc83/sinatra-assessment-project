@@ -1,1 +1,10 @@
-<h1>Insert the form to edit an instance of your model here.</h1>
+<h2>Edit Your Team Below</h2>
+<br></br>
+
+<form method="post" action="/teams/<%= @team.id %>">
+  <input type="hidden" name="_method" id="hidden" value="patch">
+  <label>Edit Your Team Below:</label>
+  <input type="text" name="name" id="name" value="<%= @team.name %>">
+  <br></br>
+  <input type="submit" name="submit" value="submit">
+</form>

@@ -1,1 +1,9 @@
-<h1>This is the show page for an individual instance of your model.</h1>
+<%= @team.name %>
+<br></br>
+
+<form method="post" action="/teams/<%= @team.id %>/delete">
+  <input type="hidden" name="_method" id="hidden" value="delete">
+  <input type="submit" name="Delete Team" value="Delete Team">
+</form>
+
+<a href="/teams/<%=@team.id%>/edit">Edit Team </a>

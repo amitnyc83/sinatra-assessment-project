@@ -1,1 +1,10 @@
-<h1>This is the show page for an individual instance of your model.</h1>
+<h1>Welcome, <%= @user.name %></h1>
+
+<h2>Your Teams</h2><br>
+<% @user.teams.each do |team| %>
+<%= team.name %>
+<a href= "/teams/edit">Edit Team</a>
+<% end %>
+<br></br>
+
+<a href="/logout">Click to Log Out</a>

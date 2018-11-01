@@ -1,1 +1,8 @@
-<h1>This is the Model's index page.</h1>
+<h1>Welcome, <%= current_user.username %></h1>
+<h2> View your Teams below </h2>
+<% @teams.each do |team| %>
+<a href="/teams/<%= team.id %>">View Team</a>
+<br></br>
+<%= team.name %>
+<br></br>
+<% end %>
