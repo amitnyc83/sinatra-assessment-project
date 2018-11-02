@@ -3,6 +3,8 @@
 <h2>Your Teams</h2><br>
 <% @user.teams.each do |team| %>
 <%= team.name %>
+<%= team.stadium %>
+<%= team.sponsor %>
 <a href= "/teams/edit">Edit Team</a>
 <% end %>
 <br></br>

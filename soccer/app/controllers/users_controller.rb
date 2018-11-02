@@ -1,9 +1,9 @@
-class OwnersController < ApplicationController
+class UsersController < ApplicationController
 
   # GET: /owners
   get "/signup" do
-    
-      erb :"owners/signup.html"
+
+      erb :"users/signup.html"
   end
 
   post "/signup" do
@@ -11,7 +11,7 @@ class OwnersController < ApplicationController
 
      redirect "/signup"
     else
-     @user = Owner.create(:name => params[:name], :username => params[:username], :password => params[:password])
+     @user = User.create(:name => params[:name], :username => params[:username], :password => params[:password])
      @user.save
 
      session[:user_id] = @user.id
@@ -22,7 +22,7 @@ class OwnersController < ApplicationController
 
   get "/login" do
     if !logged_in?
-      erb :"/owners/login.html"
+      erb :"/users/login.html"
     else
       redirect "/teams"
     end
@@ -30,14 +30,14 @@ class OwnersController < ApplicationController
 
 
   post "/login" do
-    @user = Owner.find_by(:username => params[:username])
+    @user = User.find_by(:username => params[:username])
 
     if @user && @user.authenticate(params[:password])
-      session[:owner_id] = @user.id
+      session[:user_id] = @user.id
 
       redirect "/teams"
     else
-      redirect "owners/signup"
+      redirect "users/signup"
     end
   end
 
@@ -48,10 +48,10 @@ class OwnersController < ApplicationController
   end
 
 
-  get "/owners/:slug" do
+  get "/users/:slug" do
     @user = User.find_by_slug(params[:slug])
 
-    erb :"/owners/show.html"
+    erb :"/users/show.html"
   end
 
 end

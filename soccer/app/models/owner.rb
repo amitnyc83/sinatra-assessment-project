@@ -1,6 +1,5 @@
-class Owner < ActiveRecord::Base
+class User < ActiveRecord::Base
   has_many :teams
-  has_many :players, through: :teams
   has_secure_password
 
 
@@ -12,6 +11,6 @@ class Owner < ActiveRecord::Base
     self.all.find do |user|
       user.slug == slug
     end
-  end 
+  end
 
 end

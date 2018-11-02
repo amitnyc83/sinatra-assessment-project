@@ -1,8 +1,9 @@
 <h1>Welcome, <%= current_user.username %></h1>
 <h2> View your Teams below </h2>
 <% @teams.each do |team| %>
-<a href="/teams/<%= team.id %>">View Team</a>
-<br></br>
-<%= team.name %>
+<a href="/teams/<%= team.id %>">
+  <%= team.name %>
+  <%= team.stadium %>
+  <%= team.sponsor %></a>
 <br></br>
 <% end %>

@@ -5,6 +5,7 @@ class TeamsController < ApplicationController
     if logged_in?
       @teams = Team.all
 
+
       erb :"/teams/index.html"
     else
      redirect "/login"
@@ -78,7 +79,7 @@ class TeamsController < ApplicationController
   delete "/teams/:id/delete" do
     if logged_in?
       @team = Team.find_by_id(params[:id])
-      if @team && @team.owner == current_user
+      if @team && @team.user == current_user
         @team.delete
 
         redirect "/teams"

@@ -6,5 +6,4 @@ end
 
 run ApplicationController
 use TeamsController
-use PlayersController
-use OwnersController
+use UsersController
