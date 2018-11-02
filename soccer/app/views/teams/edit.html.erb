@@ -3,8 +3,15 @@
 
 <form method="post" action="/teams/<%= @team.id %>">
   <input type="hidden" name="_method" id="hidden" value="patch">
-  <label>Edit Your Team Below:</label>
+  <h2>Edit Your Team Below:</h2>
+  <label>Team Name:</label>
   <input type="text" name="name" id="name" value="<%= @team.name %>">
+  <br></br>
+  <label>Team Stadium:</label>
+  <input type="text" name="stadium" id="stadium" value="<%= @team.stadium %>">
+  <br></br>
+  <label>Team Sponsor:</label>
+  <input type="text" name="sponsor" id="sponsor" value="<%= @team.sponsor %>">
   <br></br>
   <input type="submit" name="submit" value="submit">
 </form>
