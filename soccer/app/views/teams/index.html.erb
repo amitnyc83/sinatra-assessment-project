@@ -1,4 +1,4 @@
-<h1>Welcome, <%= current_user.username %></h1>
+<h1>Welcome, <%= current_user.username.titleize %></h1>
 <h2> View All Teams below </h2>
 <% @teams.each do |team| %>
   <label>Team Name:</label>
