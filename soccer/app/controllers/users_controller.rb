@@ -1,22 +1,22 @@
 class UsersController < ApplicationController
 
-  # GET: /owners
-  get "/signup" do
 
+  get "/signup" do
+    if !logged_in?
       erb :"users/signup.html"
+    else
+      redirect to "/teams"
+    end
   end
 
   post "/signup" do
-    if params[:name] == "" || params[:username] == "" || params[:password] ==  ""
+    @user = User.new(params[:users])
+    if user.save
+      session[:user.id] = user.id
 
-     redirect "/signup?error=Please fill out signup form and click submit"
+      redirect to "/teams"
     else
-     @user = User.create(:name => params[:name], :username => params[:username], :password => params[:password])
-     @user.save
-
-     session[:user_id] = @user.id
-
-     redirect "/teams"
+      redirect to "/signup"
     end
   end
 
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     if !logged_in?
       erb :"/users/login.html"
     else
-      redirect "/teams"
+      redirect to "/teams"
     end
   end
 
@@ -35,23 +35,45 @@ class UsersController < ApplicationController
     if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
 
-      redirect "/teams"
+      redirect to "/teams"
     else
-      redirect "users/signup"
+      redirect to "/users/signup"
     end
   end
 
-  get "/logout" do
-    session.clear
-
-    redirect "/login"
-  end
-
-
-  get "/users/:slug" do
+  get "/users/:slug/edit" do
     @user = User.find_by_slug(params[:slug])
-
-    erb :"/users/show.html"
+    if @user && @user == current_user
+      erb :"/users.edit.html"
+    else
+      redirect to "login"
+    end
   end
+
+
+  patch "/users/:slug" do
+    @user = User.find_by_slug(params[:slug])
+    if @user.authenticate(params[:password])
+      user.update(params[:user])
+      redirect to "/users/#{user.slug}"
+    else
+      redirect to "/users/#{user.slug}/edit"
+    end
+  end
+
+
+
+
+  get "/logout" do
+    if logged_in?
+      session.clear
+      redirect "/login"
+    else
+      redirect to '/'
+    end
+  end
+
+
+
 
 end

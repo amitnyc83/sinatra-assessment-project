@@ -1,12 +1,14 @@
 <h2>Create A New Team Below</h2>
-<form action="/teams" method="post">
+<form action="/teams/<%= @team.id %>" method="post">
   <h2> Enter Your Team Information Below:</h2>
   <label>Team Name:</label>
   <input type="text" name="name" id="name"><br>
   <label>Team Stadium:</label>
-  <input type="text" name="stadium" id="stadium"></br>
+  <input type="text" name="stadium" id="stadium"><br>
   <label>Team Sponsor</label>
-  <input type="text" name="sponsor" id="sponsor"></br>
+  <input type="text" name="sponsor" id="sponsor"><br>
   <input type="submit" name="submit" value="submit">
 </form>
 <br></br>
+
+<a href="/logout">Click to Log Out</a>
