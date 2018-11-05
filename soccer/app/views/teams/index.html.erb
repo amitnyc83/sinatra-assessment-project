@@ -2,7 +2,7 @@
 <h2> View All Teams below </h2>
 <% @teams.each do |team| %>
   <label>Team Name:</label>
-  <%= team.name %></a><br>
+  <a href="/teams/<%= team.id%>"><%= team.name %></a><br>
   <label>Team Stadium:</label>
   <%= team.stadium %><br>
   <label>Team Sponsor:</label>

@@ -10,9 +10,9 @@ class UsersController < ApplicationController
   end
 
   post "/signup" do
-    @user = User.new(params[:users])
+    user = User.new(params[:user])
     if user.save
-      session[:user.id] = user.id
+      session[:user_id] = user.id
 
       redirect to "/teams"
     else
@@ -30,16 +30,26 @@ class UsersController < ApplicationController
 
 
   post "/login" do
-    @user = User.find_by(:username => params[:username])
+    user = User.find_by(username: params[:username])
 
-    if @user && @user.authenticate(params[:password])
-      session[:user_id] = @user.id
+    if user && user.authenticate(params[:password])
+      session[:user_id] = user.id
 
       redirect to "/teams"
     else
-      redirect to "/users/signup"
+      redirect to "/users/login"
     end
   end
+
+  get "/users/:slug" do
+    @user = User.find_by_slug(params[:slug])
+    if @user && @user == current_user
+      erb :"/users/show.html"
+    else
+      redirect to "/login"
+    end
+  end
+
 
   get "/users/:slug/edit" do
     @user = User.find_by_slug(params[:slug])
@@ -52,8 +62,8 @@ class UsersController < ApplicationController
 
 
   patch "/users/:slug" do
-    @user = User.find_by_slug(params[:slug])
-    if @user.authenticate(params[:password])
+    user = User.find_by_slug(params[:slug])
+    if user.authenticate(params[:password])
       user.update(params[:user])
       redirect to "/users/#{user.slug}"
     else

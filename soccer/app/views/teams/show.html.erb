@@ -1,13 +1,20 @@
-<h2><%= @team.name %></h2>
-<h3><%= @team.stadium %></h3>
-<h3><%= @team.sponsor %></h3>
-<br></br>
-
+<label>Team Owner:</label>
+<h3><%= @team.user.username %></h3><br>
+<label>Team Name:</label>
+<h2><%= @team.name %></h2><br>
+<label>Stadium Name:</label>
+<h3><%= @team.stadium %></h3><br>
+<label>Team Sponsor:</label>
+<h3><%= @team.sponsor %></h3><br>
+<% if @team.user.id == current_user.id %>
+<form action="/teams/<%=@team.id%>/edit">
+  <input type="submit" value="Edit Team">
+  </form>
+  <br></br>
 <form method="post" action="/teams/<%= @team.id %>/delete">
   <input type="hidden" name="_method" id="hidden" value="delete">
   <input type="submit" name="Delete Team" value="Delete Team">
 </form>
-
-<a href="/teams/<%=@team.id%>/edit">Edit Team </a>
+<% end %>
 <br></br>
 <a href="/logout">Click to Log Out</a>

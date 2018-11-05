@@ -1,12 +1,19 @@
-<h1>Welcome, <%= @user.name %></h1>
+<h1>Welcome, <%= @user.username %></h1>
 
-<h2>Your Teams</h2><br>
+<h2>All the Teams you current Own</h2><br>
 <% @user.teams.each do |team| %>
-<%= team.name %>
-<%= team.stadium %>
+<label>Team Name:</label>
+<%= team.name %><br>
+<label>Stadium Name:</label>
+<%= team.stadium %><br>
+<label>Team Sponsor<?label>
 <%= team.sponsor %>
+<br></br>
 <a href= "/teams/edit">Edit Team</a>
 <% end %>
 <br></br>
-
-<a href="/logout">Click to Log Out</a>
+  <a href="/users/<%= @user.slug %>/edit">Click below to Edit User Info</a>
+  <br></br>
+  <a href="/teams/new">Click to add a new team to your profile</a>
+  <br></br>
+  <a href="/logout">Click to Log Out</a>

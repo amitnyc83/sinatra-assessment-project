@@ -6,7 +6,7 @@ class TeamsController < ApplicationController
       @teams = Team.all
       erb :"/teams/index.html"
     else
-     redirect to "/login"
+      redirect to "/login"
     end
   end
 
@@ -39,16 +39,13 @@ class TeamsController < ApplicationController
 
 
 
-
-
-
   get "/teams/:id" do
     if logged_in?
       @team = Team.find_by_id(params[:id])
 
       erb :"/teams/show.html"
     else
-      redirect "/login"
+      redirect to "/login"
     end
   end
 
@@ -57,9 +54,10 @@ class TeamsController < ApplicationController
       @team = Team.find_by_id(params[:id])
       if current_user == @team.user
 
-      erb :"/teams/edit.html"
-    else
-      redirect to "/teams"
+        erb :"/teams/edit.html"
+      else
+        redirect to "/teams"
+      end
     end
   end
 
@@ -93,8 +91,4 @@ class TeamsController < ApplicationController
       end
     end
   end
-
-
-
-
 end
