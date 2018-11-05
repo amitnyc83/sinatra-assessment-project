@@ -1,0 +1,11 @@
+<h2>Edit Your information below</h2>
+<form method="post" action="/users/<%= @user.slug %>">
+  <input id="hidden" type="hidden" name="_method" vaue="patch">
+  <label>Name: </label>
+  <input type="text" name="name" value="<%= @user.name %>"><br>
+  <label>Username: </label>
+  <input type="text" name="username" value="<%= @user.username %>"><br>
+  <label>Enter your Password to Edit your Information</label>
+  <input type="text" name="password"><br>
+  <input type="submit" value="Edit User Info"
+  </form>
