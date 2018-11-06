@@ -10,13 +10,14 @@ class UsersController < ApplicationController
   end
 
   post "/signup" do
-    user = User.new(params[:user])
-    if user.save
-      session[:user_id] = user.id
+   if params[:name] == "" || params[:username] == "" || params[:password] == ""
+     redirect to "/signup"
+     else
+    @user = User.create(:name => params[:name], :username => params[:username], :password => params[:password])
+    @user.save
+    session[:user_id] = @user.id
 
-      redirect to "/teams"
-    else
-      redirect to "/signup"
+    redirect to "/teams"
     end
   end
 
@@ -30,10 +31,10 @@ class UsersController < ApplicationController
 
 
   post "/login" do
-    user = User.find_by(username: params[:username])
+    @user = User.find_by(:username => params[:username])
 
-    if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
+    if @user && @user.authenticate(params[:password])
+      session[:user_id] = @user.id
 
       redirect to "/teams"
     else
@@ -54,7 +55,7 @@ class UsersController < ApplicationController
   get "/users/:slug/edit" do
     @user = User.find_by_slug(params[:slug])
     if @user && @user == current_user
-      erb :"/users.edit.html"
+      erb :"/users/edit.html"
     else
       redirect to "login"
     end
@@ -62,9 +63,9 @@ class UsersController < ApplicationController
 
 
   patch "/users/:slug" do
-    user = User.find_by_slug(params[:slug])
-    if user.authenticate(params[:password])
-      user.update(params[:user])
+    @user = User.find_by_slug(params[:slug])
+    if @user.authenticate(params[:password])
+      @user.update(name: params[:name], username: params[:username])
       redirect to "/users/#{user.slug}"
     else
       redirect to "/users/#{user.slug}/edit"
@@ -75,15 +76,7 @@ class UsersController < ApplicationController
 
 
   get "/logout" do
-    if logged_in?
       session.clear
-      redirect "/login"
-    else
-      redirect to '/'
-    end
+      redirect "/"
   end
-
-
-
-
 end

@@ -1,3 +1,5 @@
+require 'pry'
+
 class TeamsController < ApplicationController
 
   # GET: /teams
@@ -11,6 +13,23 @@ class TeamsController < ApplicationController
   end
 
 
+  post "/teams" do
+    if logged_in?
+     if params[:name] == "" || params[:stadium] == "" || params[:sponsor] == ""
+
+      redirect to "/teams/new"
+    else
+      @team = Team.create(name: params[:name], stadium: params[:stadium], sponsor: params[:sponsor])
+       current_user.teams << @team
+       current_user.save
+
+       redirect to "/teams/#{@team.id}"
+      end
+    else
+      redirect "/login"
+    end
+  end
+
 
   get "/teams/new" do
     if logged_in?
@@ -20,22 +39,8 @@ class TeamsController < ApplicationController
     end
   end
 
-  post "/teams" do
-    if logged_in?
-      team = Team.create(:name => params[:name], :stadium => params[:stadium], :sponsor => params[:sponsor])
-      current_user.teams << team
-      team.save
 
-      redirect to "/teams/#{team.id}"
-    else
-      if params[:name] == "" || params[:stadium] == "" || params[:sponsor] == ""
 
-        redirect to "/teams/new"
-      else
-        redirect to "/login"
-      end
-    end
-  end
 
 
 
@@ -49,46 +54,86 @@ class TeamsController < ApplicationController
     end
   end
 
+
+  post "/teams/:id" do
+    if params[:name] == "" || params[:stadium] == "" || params[:sponsor] == ""
+
+     redirect to "/teams/#{@team.id}/edit"
+   else
+     @team = Team.find_by_id(params[:id])
+     if @team && @team.user == current_user
+      @team.update(name: params[:name], stadium: params[:stadium], sponsor: params[:sponsor])
+       @team.save
+     redirect to "/teams/#{@team.id}"
+   else
+     redirect to "/users/#{@team.id/edit}"
+   end
+ end
+end
+
+
+
   get "/teams/:id/edit" do
     if logged_in?
       @team = Team.find_by_id(params[:id])
-      if current_user == @team.user
+      if @team.user_id == current_user.id
 
         erb :"/teams/edit.html"
       else
         redirect to "/teams"
       end
+    else
+        redirect to "/login"
     end
   end
+
+
 
 
   patch "/teams/:id" do
-    if logged_in?
-      team = Team.find_by_id(params[:id])
-      team.update(name: params[:name], stadium: params[:stadium], sponsor: params[:sponsor])
+     if params[:name] == "" || params[:stadium] == "" || params[:sponsor] == ""
 
-      redirect to "/teams/#{team.id}"
+      redirect to "/teams/#{@team.id}/edit"
     else
-      if params[:name] == "" || params[:stadium] == "" || params[:sponsor] == ""
-
-        redirect "/teams/#{params[:id]}/edit"
-      else
-        redirect "/login"
-      end
+      @team = Team.find_by_id(params[:id])
+      if @team && @team.user == current_user
+       @team.update(name: params[:name], stadium: params[:stadium], sponsor: params[:sponsor])
+        @team.save
+      redirect to "/teams/#{@team.id}"
+    else
+      redirect to "/users/#{@team.id/edit}"
     end
   end
+end
+
+
 
 
   delete "/teams/:id/delete" do
     if logged_in?
-      team = Team.find_by_id(params[:id])
-      if team && @team.user == current_user
+      @team = Team.find_by_id(params[:id])
+      if @team && @team.user_id == current_user
         @team.delete
-
-        redirect "/teams"
+      end
+        redirect to "/teams"
       else
-        redirect "/login"
+        redirect to "/login"
       end
     end
+
+    post "/teams/:id/delete" do
+      if logged_in?
+       @team = Team.find_by_id(params[:id])
+        if @team && @team.user_id == current_user
+          @team.delete
+        end
+          redirect to "/teams"
+        else
+          redirect to "/login"
+        end
+      end
+
+
+
+
   end
-end

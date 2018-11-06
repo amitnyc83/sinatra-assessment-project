@@ -9,7 +9,7 @@
 <label>Team Sponsor<?label>
 <%= team.sponsor %>
 <br></br>
-<a href= "/teams/edit">Edit Team</a>
+<a href= "/teams/<%= @user.id %>/edit">Edit Team</a>
 <% end %>
 <br></br>
   <a href="/users/<%= @user.slug %>/edit">Click below to Edit User Info</a>

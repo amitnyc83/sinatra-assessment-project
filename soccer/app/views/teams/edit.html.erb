@@ -1,19 +1,16 @@
-<h2>Edit Your Team Below</h2>
-<br></br>
-
-<form method="post" action="/teams/<%= @team.id %>">
+<form action="/teams/<%= @team.id %>" method="post">
   <input type="hidden" name="_method" id="hidden" value="patch">
   <h2>Edit Your Team Below:</h2>
   <label>Team Name:</label>
-  <input type="text" name="team[name]" id="team[name]" value="<%= @team.name %>">
+  <input type="text" name="name" id="name" value="<%= @team.name %>">
   <br></br>
   <label>Team Stadium:</label>
-  <input type="text" name="team[stadium]" id="team[stadium]" value="<%= @team.stadium %>">
+  <input type="text" name="stadium" id="stadium" value="<%= @team.stadium %>">
   <br></br>
   <label>Team Sponsor:</label>
-  <input type="text" name="team[sponsor]" id="team[sponsor]" value="<%= @team.sponsor %>">
+  <input type="text" name="sponsor" id="sponsor" value="<%= @team.sponsor %>">
   <br></br>
-  <input type="submit" name="submit" value="Edit Team">
+  <input type="submit" name="submit" value="Update Team Info">
 </form>
 <br></br>
 <a href="/logout">Click to Log Out</a>

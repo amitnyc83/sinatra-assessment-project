@@ -1,13 +1,13 @@
 <label>Team Owner:</label>
-<h3><%= @team.user.username %></h3><br>
+<h2><%= @team.user.username.titleize %></h2><br>
 <label>Team Name:</label>
-<h2><%= @team.name %></h2><br>
+<h3><%= @team.name %></h3><br>
 <label>Stadium Name:</label>
-<h3><%= @team.stadium %></h3><br>
+<h4><%= @team.stadium %></h4><br>
 <label>Team Sponsor:</label>
-<h3><%= @team.sponsor %></h3><br>
-<% if @team.user.id == current_user.id %>
-<form action="/teams/<%=@team.id%>/edit">
+<h4><%= @team.sponsor %></h4><br>
+<% if current_user.id == @team.user_id %>
+<form action="/teams/<%= @team.id %>/edit">
   <input type="submit" value="Edit Team">
   </form>
   <br></br>
