@@ -1,5 +1,3 @@
-require 'pry'
-
 class TeamsController < ApplicationController
 
   # GET: /teams
@@ -38,8 +36,6 @@ class TeamsController < ApplicationController
       redirect to "/login"
     end
   end
-
-
 
 
 
@@ -109,7 +105,7 @@ end
 
 
 
-  delete "/teams/:id/delete" do
+  delete "/teams/:id" do
     if logged_in?
       @team = Team.find_by_id(params[:id])
       if @team && @team.user_id == current_user
@@ -132,8 +128,4 @@ end
           redirect to "/login"
         end
       end
-
-
-
-
   end

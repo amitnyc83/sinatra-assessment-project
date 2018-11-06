@@ -7,11 +7,11 @@
 <label>Team Sponsor:</label>
 <h4><%= @team.sponsor %></h4><br>
 <% if current_user.id == @team.user_id %>
-<form action="/teams/<%= @team.id %>/edit">
+<form action="/teams/<%= @team.id %>/edit" method="get">
   <input type="submit" value="Edit Team">
   </form>
   <br></br>
-<form method="post" action="/teams/<%= @team.id %>/delete">
+<form method="post" action="/teams/:id/delete">
   <input type="hidden" name="_method" id="hidden" value="delete">
   <input type="submit" name="Delete Team" value="Delete Team">
 </form>

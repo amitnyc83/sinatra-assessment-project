@@ -2,10 +2,12 @@ class UsersController < ApplicationController
 
 
   get "/signup" do
-    if !logged_in?
+    if logged_in?
+      session.clear
+
       erb :"users/signup.html"
     else
-      redirect to "/teams"
+      erb :"users/signup.html"
     end
   end
 
