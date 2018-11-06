@@ -1,55 +1,66 @@
+require 'rack-flash'
+require 'pry'
+
 class UsersController < ApplicationController
+ use Rack::Flash
 
-
-  get "/signup" do
+  get '/signup' do
     if logged_in?
       session.clear
 
-      erb :"users/signup.html"
+      erb :'users/signup.html'
     else
-      erb :"users/signup.html"
+      erb :'users/signup.html'
     end
   end
 
-  post "/signup" do
-   if params[:name] == "" || params[:username] == "" || params[:password] == ""
-     redirect to "/signup"
-     else
-    @user = User.create(:name => params[:name], :username => params[:username], :password => params[:password])
-    @user.save
-    session[:user_id] = @user.id
+  post '/signup' do
+   user = User.new(params)
+    if user.save
+     session[:user_id] = user.id
 
-    redirect to "/teams"
+     flash[:message] = "Thank you for Signing up to the Soccer App. Welcome #{user.username}!"
+
+     redirect to '/'
+    else
+     redirect to '/signup'
     end
   end
 
-  get "/login" do
+  get '/login' do
     if !logged_in?
       erb :"/users/login.html"
     else
-      redirect to "/teams"
+      redirect to '/teams'
     end
   end
 
 
   post "/login" do
-    @user = User.find_by(:username => params[:username])
+    user = User.find_by(username: params[:username])
+     if user && user.authenticate(params[:password])
+      session[:user_id] = user.id
+      @user = current_user
 
-    if @user && @user.authenticate(params[:password])
-      session[:user_id] = @user.id
+      flash[:message] = "Welcome back, #{@user.username}!"
 
       redirect to "/teams"
     else
+
+      flash[:message] = "Your username and password does not match. Please try again."
       redirect to "/users/login"
     end
   end
 
+
+
   get "/users/:slug" do
-    @user = User.find_by_slug(params[:slug])
-    if @user && @user == current_user
+    #binding.pry
+     @user = User.find_by_slug(params[:slug])
+     if @user && @user.id == current_user
       erb :"/users/show.html"
     else
-      redirect to "/login"
+      redirect to "/login" 
     end
   end
 
@@ -77,8 +88,10 @@ class UsersController < ApplicationController
 
 
 
+
+
   get "/logout" do
       session.clear
-      redirect "/"
+      redirect to "/login"
   end
 end

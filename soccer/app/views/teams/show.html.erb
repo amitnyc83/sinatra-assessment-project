@@ -5,13 +5,17 @@
 <label>Stadium Name:</label>
 <h4><%= @team.stadium %></h4><br>
 <label>Team Sponsor:</label>
-<h4><%= @team.sponsor %></h4><br>
+<h4><%= @team.sponsor %></h4><br></br>
+<form action="/teams/new" method= "get">
+  <input type="submit" name="submit" value="Create Team">
+  </form>
+  <br></br>
 <% if current_user.id == @team.user_id %>
 <form action="/teams/<%= @team.id %>/edit" method="get">
   <input type="submit" value="Edit Team">
   </form>
   <br></br>
-<form method="post" action="/teams/:id/delete">
+<form method="post" action="/teams/<%= @team.id %>/delete">
   <input type="hidden" name="_method" id="hidden" value="delete">
   <input type="submit" name="Delete Team" value="Delete Team">
 </form>

@@ -9,6 +9,9 @@
   <%= team.sponsor %><br>
 <br></br>
 <% end %>
-<form action="/users/:slug" method="get">
-  <a href="/users/:slug"></a>
-<a href="/logout">Click to Log Out</a>
+<form action="/teams/new" method= "get">
+  <input type="submit" name="submit" value="Create Team">
+  </form><br>
+  <a href="/users/<%= :slug %>">View Your Teams</a>
+  <br>
+<a href="/logout">Log Out</a>
