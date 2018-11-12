@@ -1,97 +1,98 @@
-require 'rack-flash'
 require 'pry'
-
 class UsersController < ApplicationController
- use Rack::Flash
 
   get '/signup' do
     if logged_in?
-      session.clear
-
-      erb :'users/signup.html'
-    else
-      erb :'users/signup.html'
+      redirect '/teams'
     end
+      erb :'/users/signup.html'
   end
 
   post '/signup' do
-   user = User.new(params)
-    if user.save
-     session[:user_id] = user.id
-
-     flash[:message] = "Thank you for Signing up to the Soccer App. Welcome #{user.username}!"
-
-     redirect to '/'
+    if params[:username] == "" || params[:name] == "" || params[:password] == ""
+      redirect '/signup'
     else
-     redirect to '/signup'
+      @user = User.create(name: params[:name], username: params[:username], password: params[:password])
+      @user.save
+      session[:user_id] = @user.id
+      redirect '/teams'
     end
   end
 
   get '/login' do
-    if !logged_in?
-      erb :"/users/login.html"
-    else
+    if logged_in?
       redirect to '/teams'
-    end
-  end
-
-
-  post "/login" do
-    user = User.find_by(username: params[:username])
-     if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
-      @user = current_user
-
-      flash[:message] = "Welcome back, #{@user.username}!"
-
-      redirect to "/teams"
     else
-
-      flash[:message] = "Your username and password does not match. Please try again."
-      redirect to "/users/login"
+      erb :'users/login.html'
     end
   end
 
+  post '/login' do
+    @user = User.find_by(:username => params[:username])
 
-
-  get "/users/:slug" do
-    #binding.pry
-     @user = User.find_by_slug(params[:slug])
-     if @user && @user.id == current_user
-      erb :"/users/show.html"
+    if @user && @user.authenticate(params[:password])
+      session[:user_id] = @user.id
+      redirect '/teams'
     else
-      redirect to "/login" 
+      redirect to '/login'
     end
   end
 
 
-  get "/users/:slug/edit" do
-    @user = User.find_by_slug(params[:slug])
-    if @user && @user == current_user
-      erb :"/users/edit.html"
-    else
-      redirect to "login"
+    get '/users' do
+      if logged_in?
+        erb :'/users/edit.html'
+      else
+        redirect to '/login'
+      end
     end
-  end
 
-
-  patch "/users/:slug" do
-    @user = User.find_by_slug(params[:slug])
-    if @user.authenticate(params[:password])
-      @user.update(name: params[:name], username: params[:username])
-      redirect to "/users/#{user.slug}"
-    else
-      redirect to "/users/#{user.slug}/edit"
+    get '/users/:id' do
+      @user = User.find(params[:id])
+      @teams = @user.teams
+      if logged_in?
+        erb :'/users/show.html'
+      else
+        redirect to '/login'
+      end
     end
+
+    post "/users/:id" do
+      if params[:name] == "" || params[:username] == ""
+
+       redirect to "/users/#{@user.id}/edit"
+     else
+       @user = User.find_by_id(params[:id])
+       if @user && @user.id == current_user
+        @user.update(params[:user])
+         @team.save
+       redirect to "/users/#{@user.id}"
+     else
+       redirect to "/users/#{@user.id}/edit"
+     end
+   end
+  end
+
+
+    patch '/users/:id' do
+      @user = User.find(params[:id])
+      if @user_id == current_user.id
+        @user.update(params[:user])
+        @user.save
+        redirect "/users/#{@user.id}"
+      else
+        redirect '/users'
+      end
+    end
+
+
+
+  get '/logout' do
+    session.clear
+    redirect '/'
   end
 
 
 
 
-
-
-  get "/logout" do
-      session.clear
-      redirect to "/login"
-  end
 end

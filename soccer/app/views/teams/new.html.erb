@@ -1,14 +1,17 @@
 <h2>Create A New Team Below</h2>
 <form action="/teams" method="post">
   <h2> Enter Your Team Information Below:</h2>
+  <label>Team Owner:</label>
+  <%= current_user.name.titleize %><br>
   <label>Team Name:</label>
-  <input type="text" name="name" id="name"><br>
+  <input type="text" name="team[name]" id="team_name"><br>
   <label>Team Stadium:</label>
-  <input type="text" name="stadium" id="stadium"><br>
+  <input type="text" name="team[stadium]" id="team_stadium"><br>
   <label>Team Sponsor</label>
-  <input type="text" name="sponsor" id="sponsor"><br>
+  <input type="text" name="team[sponsor]" id="team_sponsor"><br>
   <input type="submit" name="submit" value="Add Team">
 </form>
 <br></br>
+<a class="button" href="/teams">Back to List of Teams</a>
 
 <a href="/logout">Click to Log Out</a>

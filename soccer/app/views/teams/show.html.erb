@@ -1,5 +1,5 @@
 <label>Team Owner:</label>
-<h2><%= @team.user.username.titleize %></h2><br>
+<h3><%= current_user.name.titleize %></h3><br>
 <label>Team Name:</label>
 <h3><%= @team.name %></h3><br>
 <label>Stadium Name:</label>
@@ -21,4 +21,5 @@
 </form>
 <% end %>
 <br></br>
-<a href="/logout">Click to Log Out</a>
+<a class="button" href="/teams">Home Page</a>
+<a class="button" href="/logout">Log Out</a>

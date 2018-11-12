@@ -1,4 +1,4 @@
-<h1>Welcome, <%= @user.username %></h1>
+<h1>Welcome, <%= current_user.username %></h1>
 
 <h2>All the Teams you current Own</h2><br>
 <% @user.teams.each do |team| %>
@@ -7,12 +7,10 @@
 <label>Stadium Name:</label>
 <%= team.stadium %><br>
 <label>Team Sponsor<?label>
-<%= team.sponsor %>
-<br></br>
+<%= team.sponsor %><br>
 <a href= "/teams/<%= @user.id %>/edit">Edit Team</a>
-<% end %>
 <br></br>
-  <a href="/users/<%= @user.slug %>/edit">Click below to Edit User Info</a>
+<% end %>
   <br></br>
   <a href="/teams/new">Click to add a new team to your profile</a>
   <br></br>
