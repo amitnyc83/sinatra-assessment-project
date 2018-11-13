@@ -32,7 +32,7 @@ class UsersController < ApplicationController
 
     if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
-      redirect '/teams'
+      redirect to '/users'
     else
       redirect to '/login'
     end
@@ -41,7 +41,7 @@ class UsersController < ApplicationController
 
     get '/users' do
       if logged_in?
-        erb :'/users/edit.html'
+        erb :'/users/index.html'
       else
         redirect to '/login'
       end
